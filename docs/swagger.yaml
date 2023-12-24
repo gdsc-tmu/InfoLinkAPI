@@ -1,0 +1,69 @@
+definitions:
+  routes.SyllabusResponse:
+    properties:
+      createdAt:
+        description: gorm.ModelのCreatedAt
+        type: string
+      credits:
+        type: integer
+      day:
+        type: string
+      faculty:
+        type: string
+      id:
+        description: gorm.ModelのID
+        type: integer
+      lectureId:
+        type: string
+      name:
+        type: string
+      period:
+        type: string
+      season:
+        type: string
+      teacher:
+        type: string
+      type:
+        type: string
+      updatedAt:
+        description: gorm.ModelのUpdatedAt
+        type: string
+      url:
+        type: string
+      year:
+        type: integer
+    type: object
+info:
+  contact: {}
+paths:
+  /syllabus:
+    get:
+      consumes:
+      - application/json
+      description: シラバス全データを取得します
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/routes.SyllabusResponse'
+      summary: シラバス全でーた取得
+      tags:
+      - tags
+  /syllabus/random:
+    get:
+      consumes:
+      - application/json
+      description: シラバスデータ1つをランダムに取得します
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/routes.SyllabusResponse'
+      summary: シラバスデータをランダム取得
+      tags:
+      - tags
+swagger: "2.0"
