@@ -6,8 +6,8 @@ WORKDIR /app
 
 ENV GOPATH /go
 ENV PATH $GOPATH/bin:$PATH
+ENV PATH="/go/bin:${PATH}"
 
-# モジュールファイルをコピー
 COPY go.mod ./
 COPY go.sum ./
 
@@ -16,6 +16,10 @@ RUN go mod download
 
 # ソースコードをコピー
 COPY . .
+
+# Swaggerドキュメントを生成
+RUN go install github.com/swaggo/swag/cmd/swag@latest
+RUN swag init
 
 # アプリケーションをビルド
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .

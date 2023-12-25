@@ -7,7 +7,7 @@ import (
 )
 
 // @Summary シラバスデータをランダム取得
-// @Description シラバスデータ1つをランダムに取得します
+// @Description シラバスデータ1つをランダムに取得します。
 // @Tags tags
 // @Accept  json
 // @Produce  json

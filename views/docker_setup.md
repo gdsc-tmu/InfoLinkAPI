@@ -23,7 +23,7 @@ docker exec -it コンテナ名 sh
 
 ### dumpデータの流し込み(初回のみ)
 ```
-docker-conpose up -d
+docker-compose up -d
 docker cp ./schema/dump.sql mysql-container:/tmp/dump.sql
 docker exec -it mysql-container bash
 mysql -u root -p demo < /tmp/dump.sql
