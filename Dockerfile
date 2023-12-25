@@ -1,5 +1,5 @@
 # ビルドステージ
-FROM golang:1.19 AS builder
+FROM golang:1.21 AS builder
 
 # 作業ディレクトリを設定
 WORKDIR /app
@@ -23,6 +23,21 @@ RUN swag init
 
 # アプリケーションをビルド
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
+
+# テストステージ
+FROM golang:1.21 AS tester
+WORKDIR /app
+COPY --from=builder /go /go
+COPY --from=builder /app /app
+RUN go test -v ./...
+
+# tidyステージ
+FROM golang:1.21 AS tidy
+WORKDIR /app
+COPY go.mod ./
+COPY go.sum ./
+COPY . .
+RUN go mod tidy
 
 # 実行ステージ
 FROM alpine:latest

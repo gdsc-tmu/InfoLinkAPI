@@ -14,6 +14,18 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql  # MySQLデータの永続化
       - ./my.cnf:/config/my.cnf
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: tester
+  tidy:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: tidy
+    volumes:
+      - .:/app
   go:
     build:
       context: .
