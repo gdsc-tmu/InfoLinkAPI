@@ -20,6 +20,7 @@ jobs:
     - name: Get dependencies
       run: |
         go get -v -t -d ./...
+        go get golang.org/x/lint/golint
     - name: Run linter
       run: |
         go install golang.org/x/lint/golint
