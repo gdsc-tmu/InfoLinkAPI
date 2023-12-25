@@ -1,40 +1,42 @@
-# dockerのセットアップ
-
-## 基本操作
-
-### コンテナ起動
-```
-docker-compose up --build -d
-```
-
-### データベースに入る
-```
-docker-conpose up -d
-docker exec -it mysql-container bash
-mysql -u root -p demo
-```
-
-## コンテナに入る
-```
-docker exec -it コンテナ名 sh
-```
+# 開発手順
 
 ## 手順(初期設定)
 
-### dumpデータの流し込み(初回のみ)
+Dockerをインストールして起動しておきます。(Docker Desktopが良いと思います)
+
+Dockerコンテナを起動します。
 ```
-docker-compose up -d
+docker-compose up --build -d
+```
+
+データベースのdumpファイルを`schema/dump.sql`に配置してコンテナ上にコピーします。
+```
 docker cp ./schema/dump.sql mysql-container:/tmp/dump.sql
+```
+
+mysqlのコンテナに入ります
+```
 docker exec -it mysql-container bash
+```
+
+dumpされたデータをデータベースに流し込みます。
+```
 mysql -u root -p demo < /tmp/dump.sql
 ```
 
-### 手順（開発時）
-コードを書いたら
+コンテナを再起動します。
 ```
-swag init
+docker-compose up -d
+```
+[Swagger UI](http://localhost:8080/swagger/index.html)にアクセスして正常に動作しているか確認します。
+
+### 手順（開発時）
+コードを書いたら、コンテナを再起動します。(ホットリロードはされません)
+```
 docker-compose up --build -d
 ```
+
+# その他
 
 ## [Swagger UI](http://localhost:8080/swagger/index.html)
 
