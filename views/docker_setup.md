@@ -59,6 +59,7 @@ docker-compose up --build -d
 ```
 [Swagger UI](http://localhost:8080/swagger/index.html)にアクセスして正常に動作しているか確認します。
 
+正常に動作していて、完成したらプルリクエスを発行します。
 
 # その他
 docker un したプロセスが溜まるっていう問題があります。。。
