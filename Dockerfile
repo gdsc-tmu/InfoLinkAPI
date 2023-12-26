@@ -17,10 +17,6 @@ RUN go mod download
 # ソースコードをコピー
 COPY . .
 
-# Swaggerドキュメントを生成
-RUN go install github.com/swaggo/swag/cmd/swag@latest
-RUN swag init
-
 # アプリケーションをビルド
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
 
@@ -38,6 +34,16 @@ COPY go.mod ./
 COPY go.sum ./
 COPY . .
 RUN go mod tidy
+
+# swaggerステージ
+FROM golang:1.21 AS swagger
+# 作業ディレクトリを設定
+WORKDIR /app
+# ソースコードをコピー
+COPY . .
+# Swaggerドキュメントを生成
+RUN go install github.com/swaggo/swag/cmd/swag@latest
+RUN swag init
 
 # 実行ステージ
 FROM alpine:latest
