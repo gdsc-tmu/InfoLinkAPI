@@ -26,6 +26,13 @@ services:
       target: tidy
     volumes:
       - .:/app
+  swag:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: swagger
+    volumes:
+      - .:/app
   go:
     build:
       context: .
