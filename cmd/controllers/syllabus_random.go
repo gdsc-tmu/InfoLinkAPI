@@ -27,7 +27,7 @@ func (sc *SyllabusController) GetRandom(c *gin.Context) {
 		Period: syllabus.Period,
         Teacher: syllabus.Teacher,
 		Name:   syllabus.Name,
-		LectureID: syllabus.LectureID,
+		LectureId: syllabus.LectureId,
 		Credits: syllabus.Credits,
 		URL: syllabus.URL,
 		Type: syllabus.Type,

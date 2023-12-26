@@ -8,16 +8,16 @@ import (
 //
 // [より詳細な説明や使用例など]
 type SyllabusBaseInfo struct {
-	Year       int16  `json:"year"`
-	Season     string `json:"season"`
-	Day        string `json:"day"`
-	Period     string `json:"period"`
-	Teacher    string `json:"teacher"`
-	Name       string `json:"name"`
-	LectureID  string `json:"lectureId"primary_key:"true"`
-	Credits    int16  `json:"credits"`
-	URL        string `json:"url"`
-	Type       string `json:"type"`
-	Faculty    string `json:"faculty"`
-	DeletedAt *time.Time `json:"deletedAt"`
+	Year       int16
+	Season     string
+	Day        string
+	Period     string
+	Teacher    string
+	Name       string
+	LectureId  string
+	Credits    int16
+	URL        string
+	Type       string
+	Faculty    string
+	DeletedAt *time.Time
 }

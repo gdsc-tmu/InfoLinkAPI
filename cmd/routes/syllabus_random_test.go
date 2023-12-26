@@ -37,7 +37,7 @@ func TestSyllabusRandomRoutes(t *testing.T) {
 	SyllabusRandomRoutes(r, gormDB)
 
 	// データベース呼び出しを模擬
-	rows := sqlmock.NewRows([]string{"year", "season", "day", "period", "teacher", "name", "lectureId", "credits", "url", "type", "faculty"}).
+	rows := sqlmock.NewRows([]string{"year", "season", "day", "period", "teacher", "name", "lecture_id", "credits", "url", "type", "faculty"}).
 		AddRow(2023,"集中","他","0限", "福田 公子", "生命科学特別講義", "R414", 1, "http://www.kyouikujouhou.eas.tmu.ac.jp/syllabus/2023/1/9/2023_13_R414.html", "大学院科目",  "13")
 
 	mock.ExpectQuery("^SELECT \\* FROM `syllabus_base_infos`.*").WillReturnRows(rows)
