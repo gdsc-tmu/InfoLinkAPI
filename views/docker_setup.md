@@ -31,10 +31,10 @@ docker-compose up -d
 ```
 [Swagger UI](http://localhost:8080/swagger/index.html)にアクセスして正常に動作しているか確認します。
 
-### 手順（開発時）
+## 開発時の手順
 コードを書いたら、以下の手順を実行して、テストと実行をします。
 
-パッケージを追加したら、go.modに反映させます。
+### パッケージを追加したら、go.modに反映させます。
 ```
 docker-compose run tidy
 ```
@@ -46,14 +46,23 @@ go mod tidy
 ```
 exit
 ```
+### swaggerドキュメントを生成します。
 ```
-docker-compose stop tidy
+docker-compose run swag
 ```
-テストを実行します。
+コンテナ中で以下を実行します。
+```
+swag init
+```
+コンテナから抜けます。
+```
+exit
+```
+#### テストを実行します。
 ```
 docker-compose up --build test
 ```
-問題が無かったら、アプリケーションを実行します。
+### 問題が無かったら、アプリケーションを実行します。
 ```
 docker-compose up --build -d
 ```
