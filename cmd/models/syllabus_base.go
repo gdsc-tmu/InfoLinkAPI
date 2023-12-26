@@ -8,16 +8,16 @@ import (
 //
 // [より詳細な説明や使用例など]
 type SyllabusBaseInfo struct {
-	LectureID  string `gorm:"primaryKey;size:5"`
-	Year       int16  `gorm:"type:smallint"`
-	Season     string `gorm:"size:8"`
-	Day        string `gorm:"size:30"`
-	Period     string `gorm:"size:30"`
-	Teacher    string `gorm:"size:50"`
-	Name       string `gorm:"size:100"`
-	Credits    int16  `gorm:"type:smallint"`
-	URL        string `gorm:"size:100"`
-	Type       string `gorm:"size:20"`
-	Faculty    string `gorm:"size:4"`
-	DeletedAt  *time.Time
+	Year       int16  `json:"year"`
+	Season     string `json:"season"`
+	Day        string `json:"day"`
+	Period     string `json:"period"`
+	Teacher    string `json:"teacher"`
+	Name       string `json:"name"`
+	LectureID  string `json:"lectureId"primary_key:"true"`
+	Credits    int16  `json:"credits"`
+	URL        string `json:"url"`
+	Type       string `json:"type"`
+	Faculty    string `json:"faculty"`
+	DeletedAt *time.Time `json:"deletedAt"`
 }
