@@ -48,5 +48,6 @@ func TestSyllabusRandomRoutes(t *testing.T) {
 
 	// レスポンスをアサート
 	assert.Equal(t, http.StatusOK, w.Code)
-	// その他のアサーションを追加: レスポンスボディが期待する内容かどうかなど
+	// レスポンスのボディをアサート
+	assert.JSONEq(t, `{"year":2023,"season":"集中","day":"他","period":"0限","teacher":"福田 公子","name":"生命科学特別講義","lectureId":"R414","credits":1,"url":"http://www.kyouikujouhou.eas.tmu.ac.jp/syllabus/2023/1/9/2023_13_R414.html","type":"大学院科目","faculty":"13"}`, w.Body.String())
 }

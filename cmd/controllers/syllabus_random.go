@@ -19,6 +19,21 @@ func (sc *SyllabusController) GetRandom(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "データの取得に失敗しました"})
 		return
 	}
+
+	viewModel := models.SyllabusViewModel{
+        Year:   syllabus.Year,
+        Season: syllabus.Season,
+        Day:    syllabus.Day,
+		Period: syllabus.Period,
+        Teacher: syllabus.Teacher,
+		Name:   syllabus.Name,
+		LectureId: syllabus.LectureId,
+		Credits: syllabus.Credits,
+		URL: syllabus.URL,
+		Type: syllabus.Type,
+		Faculty: syllabus.Faculty,
+    }
+
 	// ランダムに取得したレコードを返す
-	c.JSON(http.StatusOK, syllabus)
+	c.JSON(http.StatusOK, viewModel)
 }
