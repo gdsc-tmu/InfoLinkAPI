@@ -27,9 +27,10 @@ mysql -u root -p demo < /tmp/dump.sql
 
 コンテナを再起動します。
 ```
-docker-compose up -d
+docker-compose up --build -d
 ```
 [Swagger UI](http://localhost:8080/swagger/index.html)にアクセスして正常に動作しているか確認します。
+データベースのコンテナがたってないとgoアプリケーションのコンテナが落ちることがあるので、その時はコンテナを再起動してください。
 
 ## 開発時の手順
 コードを書いたら、以下の手順を実行して、テストと実行をします。
