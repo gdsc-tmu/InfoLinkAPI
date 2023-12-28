@@ -1,5 +1,5 @@
 definitions:
-  routes.SyllabusResponse:
+  models.SyllabusViewModel:
     properties:
       credits:
         type: integer
@@ -38,7 +38,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/routes.SyllabusResponse'
+            $ref: '#/definitions/models.SyllabusViewModel'
       summary: シラバス全データ取得
       tags:
       - tags
@@ -53,7 +53,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/routes.SyllabusResponse'
+            $ref: '#/definitions/models.SyllabusViewModel'
       summary: シラバスデータをランダム取得
       tags:
       - tags

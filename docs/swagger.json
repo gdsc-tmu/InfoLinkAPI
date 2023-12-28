@@ -21,7 +21,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/routes.SyllabusResponse"
+                            "$ref": "#/definitions/models.SyllabusViewModel"
                         }
                     }
                 }
@@ -44,7 +44,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/routes.SyllabusResponse"
+                            "$ref": "#/definitions/models.SyllabusViewModel"
                         }
                     }
                 }
@@ -52,7 +52,7 @@
         }
     },
     "definitions": {
-        "routes.SyllabusResponse": {
+        "models.SyllabusViewModel": {
             "type": "object",
             "properties": {
                 "credits": {
