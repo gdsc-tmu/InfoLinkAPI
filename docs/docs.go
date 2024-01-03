@@ -32,7 +32,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/routes.SyllabusResponse"
+                            "$ref": "#/definitions/models.SyllabusViewModel"
                         }
                     }
                 }
@@ -55,7 +55,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/routes.SyllabusResponse"
+                            "$ref": "#/definitions/models.SyllabusViewModel"
                         }
                     }
                 }
@@ -63,7 +63,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "routes.SyllabusResponse": {
+        "models.SyllabusViewModel": {
             "type": "object",
             "properties": {
                 "credits": {
