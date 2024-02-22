@@ -1,7 +1,7 @@
 # InfoLinkAPI
 都立大のさまざまな情報をAPIで提供するプロジェクトです。
 
-開発手順は等は[こちら](views/docker_setup.md)を見てください
+開発手順は等は[こちら](https://www.notion.so/928680d3ca9f4679ac28d4aae5c53dcf?pvs=4)を見てください
 
 notion: https://www.notion.so/InfoLinkAPI-9780acffd1fd45ca8a7ca3ff0cb3ef82
 
