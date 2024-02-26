@@ -3,7 +3,7 @@ package controllers
 import (
 	"net/http"
 	"github.com/gin-gonic/gin"
-	"InfoLinkAPI/cmd/models"
+	"InfoLinkAPI/src/models"
 )
 
 // [メソッド名] [動詞で始まる簡潔な説明]。

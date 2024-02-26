@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"net/http"
-	"InfoLinkAPI/cmd/models"
+	"InfoLinkAPI/src/models"
 	"gorm.io/gorm"
 	"github.com/gin-gonic/gin"
 )
