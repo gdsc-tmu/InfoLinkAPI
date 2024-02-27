@@ -1,8 +1,8 @@
 package routes
 
 import (
-	_ "InfoLinkAPI/cmd/models"
-	"InfoLinkAPI/cmd/controllers"
+	_ "InfoLinkAPI/src/models"
+	"InfoLinkAPI/src/controllers"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
