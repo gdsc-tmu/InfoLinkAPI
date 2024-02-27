@@ -38,7 +38,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/syllabus/faculties": {
+        "/syllabus/faculties/{code}": {
             "get": {
                 "description": "パラメータ引数に与えた学部コードに一致するシラバスを返します．",
                 "consumes": [
@@ -56,7 +56,7 @@ const docTemplate = `{
                         "type": "string",
                         "description": "faculty code",
                         "name": "code",
-                        "in": "query",
+                        "in": "path",
                         "required": true
                     }
                 ],

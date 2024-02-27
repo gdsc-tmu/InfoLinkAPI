@@ -42,14 +42,14 @@ paths:
       summary: シラバス全データ取得
       tags:
       - tags
-  /syllabus/faculties:
+  /syllabus/faculties/{code}:
     get:
       consumes:
       - application/json
       description: パラメータ引数に与えた学部コードに一致するシラバスを返します．
       parameters:
       - description: faculty code
-        in: query
+        in: path
         name: code
         required: true
         type: string

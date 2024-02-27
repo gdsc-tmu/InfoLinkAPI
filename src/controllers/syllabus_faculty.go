@@ -1,20 +1,20 @@
 package controllers
 
 import (
-	"InfoLinkAPI/cmd/models"
+	"InfoLinkAPI/src/models"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
-// [メソッド名] [動詞で始まる簡潔な説明]。
+// GetSyllabusByFaculty 指定した学部コードのシラバスを返す。
 //
-// [引数についての詳細説明（必要な場合）]
-// [戻り値についての詳細説明（必要な場合）]
-// [その他特記事項があれば記述]
+// 引数: 学部コード e.g.A6
+// 戻り値: Facultyフィールドが指定した学部コードであるレコード
+// 学部コードは https://github.com/tenk-9/tmuSyllabus_scrapingに一覧があります．
 func (sc *SyllabusController) GetSyllabusByFaculty(c *gin.Context) {
 	var syllabus []models.SyllabusBaseInfo
-	facultyCode := c.Query("code")
+	facultyCode := c.Param("code")
 	result := sc.DB.Where("Faculty = ?", facultyCode).Find(&syllabus)
 	
 	if result.Error != nil {
@@ -22,5 +22,5 @@ func (sc *SyllabusController) GetSyllabusByFaculty(c *gin.Context) {
 		return
 	}
 	
-	c.JSON(http.StatusOK, syllabus)
+	c.String(http.StatusOK, facultyCode)
 }

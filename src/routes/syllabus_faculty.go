@@ -1,8 +1,8 @@
 package routes
 
 import (
-	"InfoLinkAPI/cmd/controllers"
-	_ "InfoLinkAPI/cmd/models"
+	"InfoLinkAPI/src/controllers"
+	_ "InfoLinkAPI/src/models"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -13,12 +13,12 @@ import (
 // @Tags tags
 // @Accept  json
 // @Produce  json
-// @Param	code	query	string	true	"faculty code"
+// @Param	code	path	string	true	"faculty code"
 // @Success 200 {object} models.SyllabusViewModel
-// @Router /syllabus/faculties [get]
+// @Router /syllabus/faculties/{code} [get]
 func SyllabusFacultyRoutes(router *gin.Engine, db *gorm.DB) {
 	syllabusController := controllers.SyllabusController{DB: db}
 
 	// this router needs url params to search syllabus by faculty code.
-	router.GET("/syllabus/faculties", syllabusController.GetSyllabusByFaculty)
+	router.GET("/syllabus/faculties/:code", syllabusController.GetSyllabusByFaculty)
 }
