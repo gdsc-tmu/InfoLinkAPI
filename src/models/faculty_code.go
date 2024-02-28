@@ -3,7 +3,7 @@ package models
 // FacultyCode 学部コードの定義
 // 
 // models.SyllabusBaseInfo.Facultyの値．see https://github.com/tenk-9/tmuSyllabus_scraping
-const facultyCodeMap = map[string]string{
+type const FacultyMap = map[string]string{
 	// id : name
 	"02": "人文・社会系",
 	"03": "法学系",
