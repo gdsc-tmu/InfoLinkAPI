@@ -15,12 +15,12 @@ import (
 func (sc *SyllabusController) GetSyllabusByFaculty(c *gin.Context) {
 	var syllabus []models.SyllabusBaseInfo
 	facultyCode := c.Param("code")
-	result := sc.DB.Where("Faculty = ?", facultyCode).Find(&syllabus)
+	result := sc.DB.Where("faculty = ?", facultyCode).Find(&syllabus)
 	
 	if result.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
 		return
 	}
 	
-	c.String(http.StatusOK, facultyCode)
+	c.JSON(http.StatusOK, syllabus)
 }
