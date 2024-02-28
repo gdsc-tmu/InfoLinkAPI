@@ -15,6 +15,7 @@ import (
 // @Produce  json
 // @Param	code	path	string	true	"faculty code"
 // @Success 200 {object} models.SyllabusViewModel
+// @failure 400 {object} json "invalid faculty code exception"
 // @Router /syllabus/faculties/{code} [get]
 func SyllabusFacultyRoutes(router *gin.Engine, db *gorm.DB) {
 	syllabusController := controllers.SyllabusController{DB: db}
