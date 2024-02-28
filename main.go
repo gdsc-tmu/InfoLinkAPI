@@ -4,7 +4,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
 	"InfoLinkAPI/src/models"
 	"InfoLinkAPI/src/routes"
 	_ "InfoLinkAPI/docs"
@@ -17,9 +16,7 @@ func main() {
     dsn := "root:root@(mysql-container:3306)/demo?charset=utf8&parseTime=True&loc=Local"
 
 	// データベースへの接続
-    db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
-		Logger: logger.Default.LogMode(logger.Info),
-	})
+    db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
     if err != nil {
         panic("データベースへの接続に失敗しました" + err.Error())
     }
