@@ -60,6 +60,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/models.SyllabusViewModel'
+        "400":
+          description: invalid faculty code exception
+          schema:
+            type: string
       summary: 学部コードでシラバスを検索します．
       tags:
       - tags

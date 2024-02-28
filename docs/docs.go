@@ -66,6 +66,12 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/models.SyllabusViewModel"
                         }
+                    },
+                    "400": {
+                        "description": "invalid faculty code exception",
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 }
             }
