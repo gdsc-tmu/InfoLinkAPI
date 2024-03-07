@@ -53,7 +53,7 @@ func TestSyllabusFacultyRoutesValid(t *testing.T) {
 
 	// APIリクエストと，それに対するレスポンスの検証
 	// リクエストをシミュレート
-	c.Request, _ = http.NewRequest(http.MethodGet, "/syllabus/search?faculty=A6", nil)
+	c.Request, _ = http.NewRequest(http.MethodGet, "/syllabus/faculties/A6", nil)
 	r.ServeHTTP(w, c.Request)
 	// レスポンスをアサート
 	assert.Equal(t, http.StatusOK, w.Code)
@@ -113,7 +113,7 @@ func TestSyllabusFacultyRoutesInValid(t *testing.T) {
 
 	// APIリクエストと，それに対するレスポンスの検証
 	// リクエストをシミュレート
-	c.Request, _ = http.NewRequest(http.MethodGet, "/syllabus/search?faculty=111111TMU", nil)
+	c.Request, _ = http.NewRequest(http.MethodGet, "/syllabus/faculties/111111TMU", nil)
 	r.ServeHTTP(w, c.Request)
 	// レスポンスをアサート
 	assert.Equal(t, http.StatusBadRequest, w.Code)
