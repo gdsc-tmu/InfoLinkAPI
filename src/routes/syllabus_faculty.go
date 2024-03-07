@@ -13,7 +13,7 @@ import (
 // @Tags tags
 // @Accept  json
 // @Produce  json
-// @Param	faculty	query	string	true	"faculty code"
+// @Param	code	path	string	true	"faculty code"
 // @Success 200 {object} models.SyllabusViewModel
 // @failure 400 {object} string "invalid faculty code exception"
 // @Router /syllabus/search [get]
