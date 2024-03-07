@@ -42,30 +42,15 @@ paths:
       summary: シラバス全データ取得
       tags:
       - tags
-  /syllabus/random:
-    get:
-      consumes:
-      - application/json
-      description: シラバスデータ1つをランダムに取得します。
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.SyllabusViewModel'
-      summary: シラバスデータをランダム取得
-      tags:
-      - tags
-  /syllabus/search:
+  /syllabus/faculties/{code}:
     get:
       consumes:
       - application/json
       description: パラメータ引数に与えた学部コードに一致するシラバスを返します．
       parameters:
       - description: faculty code
-        in: query
-        name: faculty
+        in: path
+        name: code
         required: true
         type: string
       produces:
@@ -80,6 +65,21 @@ paths:
           schema:
             type: string
       summary: 学部コードでシラバスを検索します．
+      tags:
+      - tags
+  /syllabus/random:
+    get:
+      consumes:
+      - application/json
+      description: シラバスデータ1つをランダムに取得します。
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SyllabusViewModel'
+      summary: シラバスデータをランダム取得
       tags:
       - tags
 swagger: "2.0"
