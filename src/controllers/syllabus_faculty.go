@@ -14,7 +14,7 @@ import (
 // documentation: https://www.notion.so/24f67335e99344d0b454168b722af1ae?pvs=4#8ae439dc15f84d9297cf4ef1731e1dea
 func (sc *SyllabusController) GetSyllabusByFaculty(c *gin.Context) {
 	var syllabus []models.SyllabusBaseInfo
-	facultyCode := c.Query("faculty")
+	facultyCode := c.Query("code")
 	result := sc.DB.Where("faculty = ?", facultyCode).Find(&syllabus)
 	
 	// handle invalid faculty code
