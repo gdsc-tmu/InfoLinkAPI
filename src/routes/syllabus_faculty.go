@@ -21,5 +21,5 @@ func SyllabusFacultyRoutes(router *gin.Engine, db *gorm.DB) {
 	syllabusController := controllers.SyllabusController{DB: db}
 
 	// this router needs url params to search syllabus by faculty code.
-	router.GET("/syllabus/faculy/:code", syllabusController.GetSyllabusByFaculty)
+	router.GET("/syllabus/faculty/:code", syllabusController.GetSyllabusByFaculty)
 }
