@@ -104,7 +104,7 @@ func TestSyllabusFacultyRoutesValidCode(t *testing.T) {
 	SyllabusFacultyRoutes(engineA6, gormDB)
 
 	// リクエストのシミュレート
-	contextA6.Request, _ = http.NewRequest(http.MethodGet, "/syllabus/faculties/A6", nil)
+	contextA6.Request, _ = http.NewRequest(http.MethodGet, "/syllabus/faculty/A6", nil)
 	engineA6.ServeHTTP(writerA6, contextA6.Request)
 
 	// レスポンスをアサート
@@ -142,7 +142,7 @@ func TestSyllabusFacultyRoutesValidCode(t *testing.T) {
 	SyllabusFacultyRoutes(engine0D01, gormDB)
 
 	// リクエストのシミュレート
-	context0D01.Request, _ = http.NewRequest(http.MethodGet, "/syllabus/faculties/0D01", nil)
+	context0D01.Request, _ = http.NewRequest(http.MethodGet, "/syllabus/faculty/0D01", nil)
 	engine0D01.ServeHTTP(writer0D01, context0D01.Request)
 
 	// レスポンスをアサート
@@ -201,7 +201,7 @@ func TestSyllabusFacultyRoutesValidCodeResultUnHit(t *testing.T) {
 	SyllabusFacultyRoutes(engine, gormDB)
 
 	// リクエストのシミュレート
-	context.Request, _ = http.NewRequest(http.MethodGet, "/syllabus/faculties/A6", nil)
+	context.Request, _ = http.NewRequest(http.MethodGet, "/syllabus/faculty/A6", nil)
 	engine.ServeHTTP(writer, context.Request)
 
 	// レスポンスをアサート
@@ -247,7 +247,7 @@ func TestSyllabusFacultyRoutesInValidCode(t *testing.T) {
 	SyllabusFacultyRoutes(engine, gormDB)
 
 	// リクエストのシミュレート
-	context.Request, _ = http.NewRequest(http.MethodGet, "/syllabus/faculties/111111TMU", nil)
+	context.Request, _ = http.NewRequest(http.MethodGet, "/syllabus/faculty/111111TMU", nil)
 	engine.ServeHTTP(writer, context.Request)
 
 	// レスポンスをアサート
