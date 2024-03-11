@@ -42,6 +42,31 @@ paths:
       summary: シラバス全データ取得
       tags:
       - tags
+  /syllabus/faculties/{code}:
+    get:
+      consumes:
+      - application/json
+      description: パラメータ引数に与えた学部コードに一致するシラバスを返します．
+      parameters:
+      - description: faculty code
+        in: path
+        name: code
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SyllabusViewModel'
+        "400":
+          description: invalid faculty code exception
+          schema:
+            type: string
+      summary: 学部コードでシラバスを検索します．
+      tags:
+      - tags
   /syllabus/random:
     get:
       consumes:

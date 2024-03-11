@@ -35,6 +35,7 @@ func main() {
     // ルートとコントローラーを設定
     routes.SyllabusRoutes(router, db)
 	routes.SyllabusRandomRoutes(router, db)
+	routes.SyllabusFacultyRoutes(router, db)
 	// ....
 	// ....
 

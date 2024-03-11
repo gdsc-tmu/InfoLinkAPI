@@ -27,6 +27,44 @@
                 }
             }
         },
+        "/syllabus/faculties/{code}": {
+            "get": {
+                "description": "パラメータ引数に与えた学部コードに一致するシラバスを返します．",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "tags"
+                ],
+                "summary": "学部コードでシラバスを検索します．",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "faculty code",
+                        "name": "code",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.SyllabusViewModel"
+                        }
+                    },
+                    "400": {
+                        "description": "invalid faculty code exception",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/syllabus/random": {
             "get": {
                 "description": "シラバスデータ1つをランダムに取得します。",
