@@ -42,7 +42,7 @@ paths:
       summary: シラバス全データ取得
       tags:
       - tags
-  /syllabus/faculties/{code}:
+  /syllabus/faculty/{code}:
     get:
       consumes:
       - application/json
