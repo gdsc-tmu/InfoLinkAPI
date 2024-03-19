@@ -82,4 +82,25 @@ paths:
       summary: シラバスデータをランダム取得
       tags:
       - tags
+  /syllabus/teacher/{name}:
+    get:
+      consumes:
+      - application/json
+      description: パラメータに与えた教員名を，syllabus_base_infos.teacherとの部分一致で検索します．
+      parameters:
+      - description: teacher name
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SyllabusViewModel'
+      summary: 教員名でシラバスを検索します．
+      tags:
+      - tags
 swagger: "2.0"
