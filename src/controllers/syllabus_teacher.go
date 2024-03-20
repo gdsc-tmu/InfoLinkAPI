@@ -4,7 +4,7 @@ import (
 	"InfoLinkAPI/src/models"
 	"net/http"
 	"unicode"
-
+	"fmt"
 	"github.com/gin-gonic/gin"
 )
 // rune が空白文字であれば true を返却
@@ -21,12 +21,12 @@ func (sc *SyllabusController) GetSyllabusByTeacher(c *gin.Context) {
 	teacherName := c.Param("name")
 	// `都立太郎` -> `%都%立%太%郎%`
 	queryTeacherName := "%"
-	for _, rune := range teacherName {
-		if !IsWhiteSpace(rune) {
-			queryTeacherName += fmt.Sprintf("%s%%", rune)
+	for _, r := range teacherName {
+		if !IsWhiteSpace(r) {
+			queryTeacherName += fmt.Sprintf("%s%%", string(r))
 		}
 	}
-	result := sc.DB.Where("teacher LIKE ?", teacherName).Find(&syllabus)
+	result := sc.DB.Where("teacher LIKE ?", queryTeacherName).Find(&syllabus)
 
 	if result.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
