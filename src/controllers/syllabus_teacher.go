@@ -7,7 +7,10 @@ import (
 
 	"github.com/gin-gonic/gin"
 )
-
+// rune が空白文字であれば true を返却
+func IsWhiteSpace(r rune) bool {
+	return unicode.IsSpace(r)
+}
 // GetSyllabusByFaculty 指定した教員名が部分一致するシラバスを返す。
 //
 // 引数: 教員名 e.g. 山口
