@@ -3,6 +3,7 @@ package controllers
 import (
 	"InfoLinkAPI/src/models"
 	"net/http"
+	"unicode"
 
 	"github.com/gin-gonic/gin"
 )
