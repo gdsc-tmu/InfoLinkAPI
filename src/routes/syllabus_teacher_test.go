@@ -58,14 +58,14 @@ func TestSyllabusTeacherRoutes(t *testing.T) {
 			name: "存在しない教員",
 			testFunc: TestSyllabusTeacherRouteUnknownName,
 		},
-		// {
-		// 	name: "姓名間のスペースの有無への頑健性（日本人教員）",
-		// 	testFunc: ,
-		// },
-		// {
-		// 	name: "姓名間のスペースの有無への頑健性（外国人教員）",
-		// 	testFunc: ,
-		// },
+		{
+			name: "姓名間のスペースの有無への頑健性（日本人教員）",
+			testFunc: TestSyllabusTeacherRouteWhitespaceVariation,
+		},
+		{
+			name: "全角半角への頑健性（外国人教員）",
+			testFunc: TestSyllabusTeacherRouteCharacterVariation,
+		},
 	}
 
 	for _, tt := range tests{
