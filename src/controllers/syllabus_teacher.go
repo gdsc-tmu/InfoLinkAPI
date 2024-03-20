@@ -19,7 +19,13 @@ func IsWhiteSpace(r rune) bool {
 func (sc *SyllabusController) GetSyllabusByTeacher(c *gin.Context) {
 	var syllabus []models.SyllabusBaseInfo
 	teacherName := c.Param("name")
-	teacherName = "%" + teacherName + "%" //部分一致
+	// `都立太郎` -> `%都%立%太%郎%`
+	queryTeacherName := "%"
+	for _, rune := range teacherName {
+		if !IsWhiteSpace(rune) {
+			queryTeacherName += fmt.Sprintf("%s%%", rune)
+		}
+	}
 	result := sc.DB.Where("teacher LIKE ?", teacherName).Find(&syllabus)
 
 	if result.Error != nil {
