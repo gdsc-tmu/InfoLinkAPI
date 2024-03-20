@@ -16,3 +16,19 @@ type SyllabusViewModel struct {
 	Type       string `json:"type"`
 	Faculty    string `json:"faculty"`
 }
+
+func GetSyllabusViewModelBySyllabusBaseInfo(syllabusBaseInfo SyllabusBaseInfo) SyllabusViewModel {
+	return SyllabusViewModel{
+		Year:       syllabusBaseInfo.Year,
+		Season:     syllabusBaseInfo.Season,
+		Day:        syllabusBaseInfo.Day,
+		Period:     syllabusBaseInfo.Period,
+		Teacher:    syllabusBaseInfo.Teacher,
+		Name:       syllabusBaseInfo.Name,
+		LectureId:  syllabusBaseInfo.LectureId,
+		Credits:    syllabusBaseInfo.Credits,
+		URL:        syllabusBaseInfo.URL,
+		Type:       syllabusBaseInfo.Type,
+		Faculty:    syllabusBaseInfo.Faculty,
+	}
+}
