@@ -82,14 +82,14 @@ paths:
       summary: シラバスデータをランダム取得
       tags:
       - tags
-  /syllabus/teacher/{name}:
+  /syllabus/teacher:
     get:
       consumes:
       - application/json
       description: パラメータに与えた教員名を，syllabus_base_infos.teacherとの部分一致で検索します．
       parameters:
       - description: teacher name
-        in: path
+        in: query
         name: name
         required: true
         type: string

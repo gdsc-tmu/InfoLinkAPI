@@ -99,7 +99,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/syllabus/teacher/{name}": {
+        "/syllabus/teacher": {
             "get": {
                 "description": "パラメータに与えた教員名を，syllabus_base_infos.teacherとの部分一致で検索します．",
                 "consumes": [
@@ -117,7 +117,7 @@ const docTemplate = `{
                         "type": "string",
                         "description": "teacher name",
                         "name": "name",
-                        "in": "path",
+                        "in": "query",
                         "required": true
                     }
                 ],
