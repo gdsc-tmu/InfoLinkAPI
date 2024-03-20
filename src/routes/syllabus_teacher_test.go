@@ -25,7 +25,7 @@ import (
 // for1,2: test1~3
 // for2: test4
 // for3: test5
-// for4: test6
+// for4: test3, 6
 // 
 // test1: 異なる2日本人教員について正常な絞り込みかどうか検証
 // test2: 似た名前の2日本人教員について正常な絞り込みかどうか検証
