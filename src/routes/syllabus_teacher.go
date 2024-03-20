@@ -13,10 +13,10 @@ import (
 // @Tags tags
 // @Accept  json
 // @Produce  json
-// @Param	name	path	string	true	"teacher name"
+// @Param	name	query	string	true	"teacher name"
 // @Success 200 {object} models.SyllabusViewModel
-// @Router /syllabus/teacher/{name} [get]
+// @Router /syllabus/teacher [get]
 func SyllabusTeacherRoutes(router *gin.Engine, db *gorm.DB){
 	syllabusController := controllers.SyllabusController{DB: db}
-	router.GET("/syllabus/teacher/:name", syllabusController.GetSyllabusByTeacher)
+	router.GET("/syllabus/teacher", syllabusController.GetSyllabusByTeacher)
 }

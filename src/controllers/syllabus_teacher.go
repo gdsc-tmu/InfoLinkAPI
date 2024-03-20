@@ -18,7 +18,7 @@ func IsWhiteSpace(r rune) bool {
 // documentation: 
 func (sc *SyllabusController) GetSyllabusByTeacher(c *gin.Context) {
 	var syllabus []models.SyllabusBaseInfo
-	teacherName := c.Param("name")
+	teacherName := c.DefaultQuery("name", "")
 	// `都立太郎` -> `%都%立%太%郎%`
 	queryTeacherName := "%"
 	for _, r := range teacherName {
