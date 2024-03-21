@@ -36,6 +36,7 @@ func main() {
     routes.SyllabusRoutes(router, db)
 	routes.SyllabusRandomRoutes(router, db)
 	routes.SyllabusFacultyRoutes(router, db)
+	routes.SyllabusTeacherRoutes(router, db)
 	// ....
 	// ....
 

@@ -98,6 +98,38 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/syllabus/teacher": {
+            "get": {
+                "description": "パラメータに与えた教員名を，syllabus_base_infos.teacherとの部分一致で検索します．",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "tags"
+                ],
+                "summary": "教員名でシラバスを検索します．",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "teacher name",
+                        "name": "name",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.SyllabusViewModel"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
