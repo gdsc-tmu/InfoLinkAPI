@@ -22,7 +22,7 @@ func (sc *SyllabusController) GetSyllabusByTeacher(c *gin.Context) {
 	// `都立太郎` -> `%都%立%太%郎%`
 	queryTeacherName := "%"
 	for _, r := range teacherName {
-		if !IsWhiteSpace(r) {
+		if !isWhiteSpace(r) {
 			queryTeacherName += fmt.Sprintf("%s%%", string(r))
 		}
 	}
