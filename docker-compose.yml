@@ -14,6 +14,11 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql  # MySQLデータの永続化
       - ./my.cnf:/config/my.cnf
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
   test:
     build:
       context: .
@@ -42,6 +47,7 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
 volumes:
   mysql_data:  # ボリュームの定義
