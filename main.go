@@ -1,15 +1,16 @@
 package main
 
 import (
+	_ "InfoLinkAPI/docs"
+	"InfoLinkAPI/src/models"
+	"InfoLinkAPI/src/routes"
+
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
-	"InfoLinkAPI/src/models"
-	"InfoLinkAPI/src/routes"
-	_ "InfoLinkAPI/docs"
-	swaggerFiles "github.com/swaggo/files"
-    ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func main() {
@@ -37,6 +38,7 @@ func main() {
 	routes.SyllabusRandomRoutes(router, db)
 	routes.SyllabusFacultyRoutes(router, db)
 	routes.SyllabusTeacherRoutes(router, db)
+	routes.SyllabusCourseRoutes(router, db)
 	// ....
 	// ....
 

@@ -16,3 +16,24 @@ type SyllabusViewModel struct {
 	Type       string `json:"type"`
 	Faculty    string `json:"faculty"`
 }
+
+func GetSyllabusViewModelBySyllabusBaseInfo(syllabusBaseInfo []SyllabusBaseInfo) []SyllabusViewModel {
+	var syllabusViewModels []SyllabusViewModel
+	for _, syllabus := range syllabusBaseInfo {
+		syllabusViewModel := SyllabusViewModel{
+			Year:       syllabus.Year,
+			Season:     syllabus.Season,
+			Day:        syllabus.Day,
+			Period:     syllabus.Period,
+			Teacher:    syllabus.Teacher,
+			Name:       syllabus.Name,
+			LectureId:  syllabus.LectureId,
+			Credits:    syllabus.Credits,
+			URL:        syllabus.URL,
+			Type:       syllabus.Type,
+			Faculty:    syllabus.Faculty,
+		}
+		syllabusViewModels = append(syllabusViewModels, syllabusViewModel)
+	}
+	return syllabusViewModels
+}

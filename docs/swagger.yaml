@@ -42,6 +42,31 @@ paths:
       summary: シラバス全データ取得
       tags:
       - tags
+  /syllabus/course:
+    get:
+      consumes:
+      - application/json
+      description: クエリパラメータnameと部分一致するシラバスを返します．
+      parameters:
+      - description: course name
+        in: query
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SyllabusViewModel'
+        "400":
+          description: invalid course name exception
+          schema:
+            type: string
+      summary: 科目名でシラバスを検索します．
+      tags:
+      - tags
   /syllabus/faculty/{code}:
     get:
       consumes:
