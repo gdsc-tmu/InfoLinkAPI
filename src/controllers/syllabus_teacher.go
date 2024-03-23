@@ -35,7 +35,7 @@ func (sc *SyllabusController) GetSyllabusByTeacher(c *gin.Context) {
 
 	res := make([]models.SyllabusViewModel, 0)
 	for _, s := range syllabus {
-		res = append(res, models.ToSyllabusViewModel(s))
+		res = append(res, s.ToSyllabusViewModel())
 	}
 	
 	c.JSON(http.StatusOK, res)
