@@ -28,6 +28,11 @@ func (sc *SyllabusController) GetSyllabusByFaculty(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
 		return
 	}
+
+	res := make([]models.SyllabusViewModel, 0)
+	for _, s := range syllabus {
+		res = append(res, s.ToSyllabusViewModel())
+	}
 	
-	c.JSON(http.StatusOK, syllabus)
+	c.JSON(http.StatusOK, res)
 }
