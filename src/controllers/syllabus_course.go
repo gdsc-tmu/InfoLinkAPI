@@ -31,13 +31,11 @@ func (sc *SyllabusController) GetSyllabusByCourseName(c *gin.Context) {
 	}
 
 	// ビューモデルに変換
-	syllabusViewModels := models.GetSyllabusViewModelBySyllabusBaseInfo(syllabusBaseInfos)
-
-	if len(syllabusViewModels) == 0 {
-		c.JSON(http.StatusOK, []models.SyllabusViewModel{})
-		return
+	res := make([]models.SyllabusViewModel, 0)
+	for _, s := range syllabusBaseInfos {
+		res = append(res, s.ToSyllabusViewModel())
 	}
 
 	// HTTPレスポンス
-	c.JSON(http.StatusOK, syllabusViewModels)
+	c.JSON(http.StatusOK, res)
 }
