@@ -27,6 +27,44 @@
                 }
             }
         },
+        "/syllabus/course": {
+            "get": {
+                "description": "クエリパラメータnameと部分一致するシラバスを返します．",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "tags"
+                ],
+                "summary": "科目名でシラバスを検索します．",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "course name",
+                        "name": "name",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.SyllabusViewModel"
+                        }
+                    },
+                    "400": {
+                        "description": "invalid course name exception",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/syllabus/faculty/{code}": {
             "get": {
                 "description": "パラメータ引数に与えた学部コードに一致するシラバスを返します．",

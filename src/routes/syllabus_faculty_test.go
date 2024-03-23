@@ -36,28 +36,28 @@ func TestSyllabusFacultyRoutes(t *testing.T) {
 	// test3: code無効
 	// ------------------------------
 	type TestCase struct {
-		name string
+		name     string
 		testFunc func(t *testing.T)
 	}
 
 	tests := []TestCase{
 		{
-			name: "有効な各部コード，該当レコードが存在する",
+			name:     "有効な各部コード，該当レコードが存在する",
 			testFunc: TestSyllabusFacultyRoutesValidCode,
 		},
 		{
 			// 学部のみの絞り込みではありえないが，複数条件で絞り込むと起こりうるケース
-			name: "有効な各部コード，該当レコードが存在しない",
+			name:     "有効な各部コード，該当レコードが存在しない",
 			testFunc: TestSyllabusFacultyRoutesValidCodeResultUnHit,
 		},
 		{
-			name: "無効な学部コード",
+			name:     "無効な学部コード",
 			testFunc: TestSyllabusFacultyRoutesInValidCode,
 		},
 	}
 
-	for _, tt := range tests{
-		t.Run(tt.name, func(t *testing.T){
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
 			tt.testFunc(t)
 		})
 	}
@@ -79,7 +79,7 @@ func TestSyllabusFacultyRoutesValidCode(t *testing.T) {
 
 	// GORMからmockDBに接続する
 	gormDB, err := gorm.Open(mysql.New(mysql.Config{
-		Conn: db,
+		Conn:                      db,
 		SkipInitializeWithVersion: true,
 	}), &gorm.Config{})
 	if err != nil {
@@ -111,21 +111,20 @@ func TestSyllabusFacultyRoutesValidCode(t *testing.T) {
 	assert.Equal(t, http.StatusOK, writerA6.Code)
 	// レスポンスのボディをアサート
 	assert.JSONEq(t,
-	`[{
-    "Year": 2023,
-    "Season": "後期",
-    "Day": "水",
-    "Period": "2限",
-    "Teacher": "岡本 正吾",
-    "Name": "データ構造とアルゴリズム演習（CS）",
-    "LectureId": "L0111",
-    "Credits": 2,
-    "URL": "http://www.kyouikujouhou.eas.tmu.ac.jp/syllabus/2023/A/3/2023_A6_L0111.html",
-    "Type": "専門教育科目",
-    "Faculty": "A6",
-    "DeletedAt": null
+		`[{
+    "year": 2023,
+    "season": "後期",
+    "day": "水",
+    "period": "2限",
+    "teacher": "岡本 正吾",
+    "name": "データ構造とアルゴリズム演習（CS）",
+    "lectureId": "L0111",
+    "credits": 2,
+    "url": "http://www.kyouikujouhou.eas.tmu.ac.jp/syllabus/2023/A/3/2023_A6_L0111.html",
+    "type": "専門教育科目",
+    "faculty": "A6"
 	}]`,
-	writerA6.Body.String())
+		writerA6.Body.String())
 
 	// ------------------------------
 	// case2: code=0D01
@@ -149,21 +148,20 @@ func TestSyllabusFacultyRoutesValidCode(t *testing.T) {
 	assert.Equal(t, http.StatusOK, writer0D01.Code)
 	// レスポンスのボディをアサート
 	assert.JSONEq(t,
-	`[{
-    "Year": 2023,
-    "Season": "前期",
-    "Day": "月",
-    "Period": "5限",
-    "Teacher": "會田 雅樹",
-    "Name": "基礎ゼミナール",
-    "LectureId": "A0127",
-    "Credits": 2,
-    "URL": "http://www.kyouikujouhou.eas.tmu.ac.jp/syllabus/2023/0/1/2023_0D01_A0127.html",
-    "Type": "基礎科目群",
-    "Faculty": "0D01",
-    "DeletedAt": null
+		`[{
+    "year": 2023,
+    "season": "前期",
+    "day": "月",
+    "period": "5限",
+    "teacher": "會田 雅樹",
+    "name": "基礎ゼミナール",
+    "lectureId": "A0127",
+    "credits": 2,
+    "url": "http://www.kyouikujouhou.eas.tmu.ac.jp/syllabus/2023/0/1/2023_0D01_A0127.html",
+    "type": "基礎科目群",
+    "faculty": "0D01"
 	}]`,
-	writer0D01.Body.String())
+		writer0D01.Body.String())
 }
 
 // test2
@@ -179,7 +177,7 @@ func TestSyllabusFacultyRoutesValidCodeResultUnHit(t *testing.T) {
 
 	// GORMからmockDBに接続する
 	gormDB, err := gorm.Open(mysql.New(mysql.Config{
-		Conn: db,
+		Conn:                      db,
 		SkipInitializeWithVersion: true,
 	}), &gorm.Config{})
 	if err != nil {
@@ -208,8 +206,8 @@ func TestSyllabusFacultyRoutesValidCodeResultUnHit(t *testing.T) {
 	assert.Equal(t, http.StatusOK, writer.Code)
 	// レスポンスのボディをアサート
 	assert.JSONEq(t,
-	`[]`,
-	writer.Body.String())
+		`[]`,
+		writer.Body.String())
 }
 
 // test3
@@ -225,7 +223,7 @@ func TestSyllabusFacultyRoutesInValidCode(t *testing.T) {
 
 	// GORMからmockDBに接続する
 	gormDB, err := gorm.Open(mysql.New(mysql.Config{
-		Conn: db,
+		Conn:                      db,
 		SkipInitializeWithVersion: true,
 	}), &gorm.Config{})
 	if err != nil {
