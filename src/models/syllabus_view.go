@@ -17,7 +17,7 @@ type SyllabusViewModel struct {
 	Faculty    string `json:"faculty"`
 }
 
-func ToSyllabusViewModel(syllabus SyllabusBaseInfo) SyllabusViewModel {
+func (syllabus *SyllabusBaseInfo) ToSyllabusViewModel() SyllabusViewModel {
 	return SyllabusViewModel{
         Year:   syllabus.Year,
         Season: syllabus.Season,

@@ -21,7 +21,7 @@ func (sc *SyllabusController) GetRandom(c *gin.Context) {
 	}
 
 	// レスポンス用の構造体に変換
-	res := models.ToSyllabusViewModel(syllabus)
+	res := syllabus.ToSyllabusViewModel()
 
 	// ランダムに取得したレコードを返す
 	c.JSON(http.StatusOK, res)
