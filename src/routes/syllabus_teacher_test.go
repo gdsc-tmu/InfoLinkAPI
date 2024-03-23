@@ -5,12 +5,13 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"database/sql"
+
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	"database/sql"
 )
 
 // ------------------------------
@@ -21,12 +22,12 @@ import (
 // 2. 指定した名前の教員以外が担当する授業が返されていないこと
 // 3. 姓名の間のスペースの有無を吸収できているか
 // 4. アルファベットの全角半角に対応できているか
-// 
+//
 // for1,2: test1~3
 // for2: test4
 // for3: test5
 // for4: test3, 6
-// 
+//
 // test1: 異なる2日本人教員について正常な絞り込みかどうか検証
 // test2: 似た名前の2日本人教員について正常な絞り込みかどうか検証
 // test3: 異なる2外国人教員について正常な絞り込みかどうか検証
@@ -37,39 +38,39 @@ import (
 // union
 func TestSyllabusTeacherRoutes(t *testing.T) {
 	type TestCase struct {
-		name string
+		name     string
 		testFunc func(t *testing.T)
 	}
 
 	tests := []TestCase{
 		{
-			name: "異なる名前の日本人教員2人",
+			name:     "異なる名前の日本人教員2人",
 			testFunc: TestSyllabusTeacherRouteJpName,
 		},
 		{
-			name: "似た名前の日本人教員2人",
+			name:     "似た名前の日本人教員2人",
 			testFunc: TestSyllabusTeacherRouteJpNameClose,
 		},
 		{
-			name: "異なる名前の外国人教員2人",
+			name:     "異なる名前の外国人教員2人",
 			testFunc: TestSyllabusTeacherRouteEnName,
 		},
 		{
-			name: "存在しない教員",
+			name:     "存在しない教員",
 			testFunc: TestSyllabusTeacherRouteUnknownName,
 		},
 		{
-			name: "姓名間のスペースの有無への頑健性（日本人教員）",
+			name:     "姓名間のスペースの有無への頑健性（日本人教員）",
 			testFunc: TestSyllabusTeacherRouteWhitespaceVariation,
 		},
 		{
-			name: "全角半角への頑健性（外国人教員）",
+			name:     "全角半角への頑健性（外国人教員）",
 			testFunc: TestSyllabusTeacherRouteCharacterVariation,
 		},
 	}
 
-	for _, tt := range tests{
-		t.Run(tt.name, func(t *testing.T){
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
 			tt.testFunc(t)
 		})
 	}
@@ -86,7 +87,7 @@ func TeacherRouteTestSetup(t *testing.T) (*sql.DB, *gorm.DB, sqlmock.Sqlmock, []
 	cols := []string{"year", "season", "day", "period", "teacher", "name", "lecture_id", "credits", "url", "type", "faculty"}
 	// GORMからmockDBに接続する
 	gormDB, err := gorm.Open(mysql.New(mysql.Config{
-		Conn: db,
+		Conn:                      db,
 		SkipInitializeWithVersion: true,
 	}), &gorm.Config{})
 	if err != nil {
@@ -111,16 +112,16 @@ func TestSyllabusTeacherRouteJpName(t *testing.T) {
 	// mockの設定
 	expectedRows1 := sqlmock.NewRows(cols).AddRow(
 		2023,
-		"後期", 
-		"金", 
-		"3限", 
-		"岡本 正吾", 
-		"バーチャルリアリティ", 
-		"L0148", 
-		2, 
-		"http://www.kyouikujouhou.eas.tmu.ac.jp/syllabus/2023/A/5/2023_A6_L0148.html", 
-		"専門教育科目", 
-		"A6", 
+		"後期",
+		"金",
+		"3限",
+		"岡本 正吾",
+		"バーチャルリアリティ",
+		"L0148",
+		2,
+		"http://www.kyouikujouhou.eas.tmu.ac.jp/syllabus/2023/A/5/2023_A6_L0148.html",
+		"専門教育科目",
+		"A6",
 	)
 	mock.ExpectQuery("^SELECT \\* FROM `syllabus_base_infos` WHERE teacher LIKE \\?").WithArgs("%岡%本%正%吾%").WillReturnRows(expectedRows1)
 
@@ -139,21 +140,20 @@ func TestSyllabusTeacherRouteJpName(t *testing.T) {
 	assert.Equal(t, http.StatusOK, writer1.Code)
 	// レスポンスのボディをアサート
 	assert.JSONEq(t,
-	`[{
-    "Year": 2023,
-    "Season": "後期",
-    "Day": "金",
-    "Period": "3限",
-    "Teacher": "岡本 正吾",
-    "Name": "バーチャルリアリティ",
-    "LectureId": "L0148",
-    "Credits": 2,
-    "URL": "http://www.kyouikujouhou.eas.tmu.ac.jp/syllabus/2023/A/5/2023_A6_L0148.html",
-    "Type": "専門教育科目",
-    "Faculty": "A6",
-    "DeletedAt": null
+		`[{
+    "year": 2023,
+    "season": "後期",
+    "day": "金",
+    "period": "3限",
+    "teacher": "岡本 正吾",
+    "name": "バーチャルリアリティ",
+    "lectureId": "L0148",
+    "credits": 2,
+    "url": "http://www.kyouikujouhou.eas.tmu.ac.jp/syllabus/2023/A/5/2023_A6_L0148.html",
+    "type": "専門教育科目",
+    "faculty": "A6"
     }]`,
-	writer1.Body.String())
+		writer1.Body.String())
 
 	// ------------------------------
 	// case2: name=小町 守
@@ -189,21 +189,20 @@ func TestSyllabusTeacherRouteJpName(t *testing.T) {
 	assert.Equal(t, http.StatusOK, writer2.Code)
 	// レスポンスのボディをアサート
 	assert.JSONEq(t,
-	`[{
-    "Year": 2023,
-    "Season": "集中",
-    "Day": "他",
-    "Period": "0限",
-    "Teacher": "小町 守",
-    "Name": "自然言語処理",
-    "LectureId": "L0161",
-    "Credits": 2,
-    "URL": "http://www.kyouikujouhou.eas.tmu.ac.jp/syllabus/2023/A/9/2023_A6_L0161.html",
-    "Type": "専門教育科目",
-    "Faculty": "A6",
-    "DeletedAt": null
+		`[{
+    "year": 2023,
+    "season": "集中",
+    "day": "他",
+    "period": "0限",
+    "teacher": "小町 守",
+    "name": "自然言語処理",
+    "lectureId": "L0161",
+    "credits": 2,
+    "url": "http://www.kyouikujouhou.eas.tmu.ac.jp/syllabus/2023/A/9/2023_A6_L0161.html",
+    "type": "専門教育科目",
+    "faculty": "A6"
     }]`,
-	writer2.Body.String())
+		writer2.Body.String())
 }
 
 // test2
@@ -264,37 +263,35 @@ func TestSyllabusTeacherRouteJpNameClose(t *testing.T) {
 	assert.Equal(t, http.StatusOK, writer1.Code)
 	// レスポンスのボディをアサート
 	assert.JSONEq(t,
-	`[
+		`[
 		{
-			"Year": 2023,
-			"Season": "集中",
-			"Day": "他",
-			"Period": "0限",
-			"Teacher": "山口 大輔",
-			"Name": "情報と職業",
-			"LectureId": "L0001",
-			"Credits": 2,
-			"URL": "http://www.kyouikujouhou.eas.tmu.ac.jp/syllabus/2023/A/9/2023_A6_L0001.html",
-			"Type": "専門教育科目",
-			"Faculty": "A6",
-			"DeletedAt": null
+			"year": 2023,
+			"season": "集中",
+			"day": "他",
+			"period": "0限",
+			"teacher": "山口 大輔",
+			"name": "情報と職業",
+			"lectureId": "L0001",
+			"credits": 2,
+			"url": "http://www.kyouikujouhou.eas.tmu.ac.jp/syllabus/2023/A/9/2023_A6_L0001.html",
+			"type": "専門教育科目",
+			"faculty": "A6"
 	  	},
 		{
-			"Year": 2023,
-			"Season": "後期",
-			"Day": "火",
-			"Period": "1限",
-			"Teacher": "山口 京一郎",
-			"Name": "実践英語IIb(612)",
-			"LectureId": "A0555",
-			"Credits": 1,
-			"URL": "http://www.kyouikujouhou.eas.tmu.ac.jp/syllabus/2023/0/2/2023_0D02_A0555.html",
-			"Type": "言語科目",
-			"Faculty": "0D02",
-			"DeletedAt": null
+			"year": 2023,
+			"season": "後期",
+			"day": "火",
+			"period": "1限",
+			"teacher": "山口 京一郎",
+			"name": "実践英語IIb(612)",
+			"lectureId": "A0555",
+			"credits": 1,
+			"url": "http://www.kyouikujouhou.eas.tmu.ac.jp/syllabus/2023/0/2/2023_0D02_A0555.html",
+			"type": "言語科目",
+			"faculty": "0D02"
 		}
 	]`,
-	writer1.Body.String())
+		writer1.Body.String())
 
 	// ------------------------------
 	// case2: name=山口 大輔
@@ -330,23 +327,22 @@ func TestSyllabusTeacherRouteJpNameClose(t *testing.T) {
 	assert.Equal(t, http.StatusOK, writer2.Code)
 	// レスポンスのボディをアサート
 	assert.JSONEq(t,
-	`[
+		`[
 		{
-			"Year": 2023,
-			"Season": "集中",
-			"Day": "他",
-			"Period": "0限",
-			"Teacher": "山口 大輔",
-			"Name": "情報と職業",
-			"LectureId": "L0001",
-			"Credits": 2,
-			"URL": "http://www.kyouikujouhou.eas.tmu.ac.jp/syllabus/2023/A/9/2023_A6_L0001.html",
-			"Type": "専門教育科目",
-			"Faculty": "A6",
-			"DeletedAt": null
+			"year": 2023,
+			"season": "集中",
+			"day": "他",
+			"period": "0限",
+			"teacher": "山口 大輔",
+			"name": "情報と職業",
+			"lectureId": "L0001",
+			"credits": 2,
+			"url": "http://www.kyouikujouhou.eas.tmu.ac.jp/syllabus/2023/A/9/2023_A6_L0001.html",
+			"type": "専門教育科目",
+			"faculty": "A6"
 	  	}
 	]`,
-	writer2.Body.String())
+		writer2.Body.String())
 
 	// ------------------------------
 	// case3: name=山口 京一郎
@@ -382,23 +378,22 @@ func TestSyllabusTeacherRouteJpNameClose(t *testing.T) {
 	assert.Equal(t, http.StatusOK, writer3.Code)
 	// レスポンスのボディをアサート
 	assert.JSONEq(t,
-	`[
+		`[
 		{
-			"Year": 2023,
-			"Season": "後期",
-			"Day": "火",
-			"Period": "1限",
-			"Teacher": "山口 京一郎",
-			"Name": "実践英語IIb(612)",
-			"LectureId": "A0555",
-			"Credits": 1,
-			"URL": "http://www.kyouikujouhou.eas.tmu.ac.jp/syllabus/2023/0/2/2023_0D02_A0555.html",
-			"Type": "言語科目",
-			"Faculty": "0D02",
-			"DeletedAt": null
+			"year": 2023,
+			"season": "後期",
+			"day": "火",
+			"period": "1限",
+			"teacher": "山口 京一郎",
+			"name": "実践英語IIb(612)",
+			"lectureId": "A0555",
+			"credits": 1,
+			"url": "http://www.kyouikujouhou.eas.tmu.ac.jp/syllabus/2023/0/2/2023_0D02_A0555.html",
+			"type": "言語科目",
+			"faculty": "0D02"
 	  	}
 	]`,
-	writer3.Body.String())
+		writer3.Body.String())
 }
 
 // test3
@@ -443,23 +438,22 @@ func TestSyllabusTeacherRouteEnName(t *testing.T) {
 	assert.Equal(t, http.StatusOK, writer1.Code)
 	// レスポンスのボディをアサート
 	assert.JSONEq(t,
-	`[
+		`[
 		{
-			"Year": 2023,
-			"Season": "後期",
-			"Day": "月",
-			"Period": "3限",
-			"Teacher": "ThomasBrotherhood",
-			"Name": "MigrationandJapan",
-			"LectureId": "X0185",
-			"Credits": 2,
-			"URL": "http://www.kyouikujouhou.eas.tmu.ac.jp/syllabus/2023/0/1/2023_0D05_X0185.html",
-			"Type": "教養/都市・社会・環境",
-			"Faculty": "0D05",
-			"DeletedAt": null
+			"year": 2023,
+			"season": "後期",
+			"day": "月",
+			"period": "3限",
+			"teacher": "ThomasBrotherhood",
+			"name": "MigrationandJapan",
+			"lectureId": "X0185",
+			"credits": 2,
+			"url": "http://www.kyouikujouhou.eas.tmu.ac.jp/syllabus/2023/0/1/2023_0D05_X0185.html",
+			"type": "教養/都市・社会・環境",
+			"faculty": "0D05"
     	}
 	]`,
-	writer1.Body.String())
+		writer1.Body.String())
 
 	// ------------------------------
 	// case2: name=James Baldwin
@@ -495,21 +489,20 @@ func TestSyllabusTeacherRouteEnName(t *testing.T) {
 	assert.Equal(t, http.StatusOK, writer2.Code)
 	// レスポンスのボディをアサート
 	assert.JSONEq(t,
-	`[{
-		"Year": 2023,
-		"Season": "前期",
-		"Day": "木",
-		"Period": "6限",
-		"Teacher": "JamesBaldwin",
-		"Name": "医科学英語プレゼンテーションスキルⅠ",
-		"LectureId": "U0525",
-		"Credits": 2,
-		"URL": "http://www.kyouikujouhou.eas.tmu.ac.jp/syllabus/2023/1/4/2023_16_U0525.html",
-		"Type": "専攻科目",
-		"Faculty": "16",
-		"DeletedAt": null
+		`[{
+		"year": 2023,
+		"season": "前期",
+		"day": "木",
+		"period": "6限",
+		"teacher": "JamesBaldwin",
+		"name": "医科学英語プレゼンテーションスキルⅠ",
+		"lectureId": "U0525",
+		"credits": 2,
+		"url": "http://www.kyouikujouhou.eas.tmu.ac.jp/syllabus/2023/1/4/2023_16_U0525.html",
+		"type": "専攻科目",
+		"faculty": "16"
     }]`,
-	writer2.Body.String())
+		writer2.Body.String())
 }
 
 // test4
@@ -542,8 +535,8 @@ func TestSyllabusTeacherRouteUnknownName(t *testing.T) {
 	assert.Equal(t, http.StatusOK, writer1.Code)
 	// レスポンスのボディをアサート
 	assert.JSONEq(t,
-	`[]`,
-	writer1.Body.String())
+		`[]`,
+		writer1.Body.String())
 
 	// ------------------------------
 	// case2: name=高橋 恵
@@ -567,8 +560,8 @@ func TestSyllabusTeacherRouteUnknownName(t *testing.T) {
 	assert.Equal(t, http.StatusOK, writer2.Code)
 	// レスポンスのボディをアサート
 	assert.JSONEq(t,
-	`[]`,
-	writer2.Body.String())
+		`[]`,
+		writer2.Body.String())
 }
 
 // test5
@@ -582,7 +575,7 @@ func TestSyllabusTeacherRouteWhitespaceVariation(t *testing.T) {
 
 	db, gormDB, mock, cols := TeacherRouteTestSetup(t)
 	defer db.Close()
-	
+
 	// ------------------------------
 	// case1: name=塩田さやか
 	// ------------------------------
@@ -617,23 +610,22 @@ func TestSyllabusTeacherRouteWhitespaceVariation(t *testing.T) {
 	assert.Equal(t, http.StatusOK, writer1.Code)
 	// レスポンスのボディをアサート
 	assert.JSONEq(t,
-	`[
+		`[
 		{
-			"Year": 2023,
-			"Season": "前期",
-			"Day": "水",
-			"Period": "4限",
-			"Teacher": "塩田 さやか",
-			"Name": "画像処理（CS）",
-			"LectureId": "L0133",
-			"Credits": 2,
-			"URL": "http://www.kyouikujouhou.eas.tmu.ac.jp/syllabus/2023/A/3/2023_A6_L0133.html",
-			"Type": "専門教育科目",
-			"Faculty": "A6",
-			"DeletedAt": null
+			"year": 2023,
+			"season": "前期",
+			"day": "水",
+			"period": "4限",
+			"teacher": "塩田 さやか",
+			"name": "画像処理（CS）",
+			"lectureId": "L0133",
+			"credits": 2,
+			"url": "http://www.kyouikujouhou.eas.tmu.ac.jp/syllabus/2023/A/3/2023_A6_L0133.html",
+			"type": "専門教育科目",
+			"faculty": "A6"
 		}
 	]`,
-	writer1.Body.String())
+		writer1.Body.String())
 
 	// ------------------------------
 	// case2: name=小野 順貴
@@ -669,23 +661,22 @@ func TestSyllabusTeacherRouteWhitespaceVariation(t *testing.T) {
 	assert.Equal(t, http.StatusOK, writer2.Code)
 	// レスポンスのボディをアサート
 	assert.JSONEq(t,
-	`[
+		`[
 		{
-			"Year": 2023,
-			"Season": "後期",
-			"Day": "水",
-			"Period": "4限",
-			"Teacher": "小野 順貴",
-			"Name": "音響・音声信号処理",
-			"LectureId": "L0146",
-			"Credits": 2,
-			"URL": "http://www.kyouikujouhou.eas.tmu.ac.jp/syllabus/2023/A/3/2023_A6_L0146.html",
-			"Type": "専門教育科目",
-			"Faculty": "A6",
-			"DeletedAt": null
+			"year": 2023,
+			"season": "後期",
+			"day": "水",
+			"period": "4限",
+			"teacher": "小野 順貴",
+			"name": "音響・音声信号処理",
+			"lectureId": "L0146",
+			"credits": 2,
+			"url": "http://www.kyouikujouhou.eas.tmu.ac.jp/syllabus/2023/A/3/2023_A6_L0146.html",
+			"type": "専門教育科目",
+			"faculty": "A6"
 		}
 	]`,
-	writer2.Body.String())
+		writer2.Body.String())
 
 	// ------------------------------
 	// case3: name=松田　崇弘
@@ -721,23 +712,22 @@ func TestSyllabusTeacherRouteWhitespaceVariation(t *testing.T) {
 	assert.Equal(t, http.StatusOK, writer3.Code)
 	// レスポンスのボディをアサート
 	assert.JSONEq(t,
-	`[
+		`[
 		{
-			"Year": 2023,
-			"Season": "後期",
-			"Day": "木",
-			"Period": "2限",
-			"Teacher": "松田 崇弘",
-			"Name": "無線ネットワーク（CS）",
-			"LectureId": "L0141",
-			"Credits": 2,
-			"URL": "http://www.kyouikujouhou.eas.tmu.ac.jp/syllabus/2023/A/4/2023_A6_L0141.html",
-			"Type": "専門教育科目",
-			"Faculty": "A6",
-			"DeletedAt": null
+			"year": 2023,
+			"season": "後期",
+			"day": "木",
+			"period": "2限",
+			"teacher": "松田 崇弘",
+			"name": "無線ネットワーク（CS）",
+			"lectureId": "L0141",
+			"credits": 2,
+			"url": "http://www.kyouikujouhou.eas.tmu.ac.jp/syllabus/2023/A/4/2023_A6_L0141.html",
+			"type": "専門教育科目",
+			"faculty": "A6"
 		}
 	]`,
-	writer3.Body.String())
+		writer3.Body.String())
 }
 
 // test6
@@ -749,7 +739,7 @@ func TestSyllabusTeacherRouteCharacterVariation(t *testing.T) {
 
 	db, gormDB, mock, cols := TeacherRouteTestSetup(t)
 	defer db.Close()
-	
+
 	// ------------------------------
 	// case1: 全半角, Already verified @ TestSyllabusTeacherRouteEnName.
 	// ------------------------------
@@ -802,37 +792,35 @@ func TestSyllabusTeacherRouteCharacterVariation(t *testing.T) {
 	assert.Equal(t, http.StatusOK, writer2.Code)
 	// レスポンスのボディをアサート
 	assert.JSONEq(t,
-	`[
+		`[
 		{
-			"Year": 2023,
-			"Season": "前期",
-			"Day": "月",
-			"Period": "2限",
-			"Teacher": "AdamLincCronin",
-			"Name": "Ecology（生態学各論）",
-			"LectureId": "I429",
-			"Credits": 2,
-			"URL": "http://www.kyouikujouhou.eas.tmu.ac.jp/syllabus/2023/0/1/2023_05_I429.html",
-			"Type": "専門教育科目",
-			"Faculty": "05",
-			"DeletedAt": null
+			"year": 2023,
+			"season": "前期",
+			"day": "月",
+			"period": "2限",
+			"teacher": "AdamLincCronin",
+			"name": "Ecology（生態学各論）",
+			"lectureId": "I429",
+			"credits": 2,
+			"url": "http://www.kyouikujouhou.eas.tmu.ac.jp/syllabus/2023/0/1/2023_05_I429.html",
+			"type": "専門教育科目",
+			"faculty": "05"
 		},
 		{
-			"Year": 2023,
-			"Season": "後期",
-			"Day": "水",
-			"Period": "4限",
-			"Teacher": "VerlAdams",
-			"Name": "SeminarinSpatialDesignⅡ",
-			"LectureId": "L0761",
-			"Credits": 2,
-			"URL": "http://www.kyouikujouhou.eas.tmu.ac.jp/syllabus/2023/A/3/2023_A6_L0761.html",
-			"Type": "専門教育科目",
-			"Faculty": "A6",
-			"DeletedAt": null
+			"year": 2023,
+			"season": "後期",
+			"day": "水",
+			"period": "4限",
+			"teacher": "VerlAdams",
+			"name": "SeminarinSpatialDesignⅡ",
+			"lectureId": "L0761",
+			"credits": 2,
+			"url": "http://www.kyouikujouhou.eas.tmu.ac.jp/syllabus/2023/A/3/2023_A6_L0761.html",
+			"type": "専門教育科目",
+			"faculty": "A6"
 		}
 	]`,
-	writer2.Body.String())
+		writer2.Body.String())
 
 	// ------------------------------
 	// case3: 全全角, name=ＶｅｒｌＡｄａｍｓ
@@ -869,23 +857,20 @@ func TestSyllabusTeacherRouteCharacterVariation(t *testing.T) {
 	assert.Equal(t, http.StatusOK, writer3.Code)
 	// レスポンスのボディをアサート
 	assert.JSONEq(t,
-	`[
+		`[
 		{
-			"Year": 2023,
-			"Season": "後期",
-			"Day": "水",
-			"Period": "4限",
-			"Teacher": "VerlAdams",
-			"Name": "SeminarinSpatialDesignⅡ",
-			"LectureId": "L0761",
-			"Credits": 2,
-			"URL": "http://www.kyouikujouhou.eas.tmu.ac.jp/syllabus/2023/A/3/2023_A6_L0761.html",
-			"Type": "専門教育科目",
-			"Faculty": "A6",
-			"DeletedAt": null
+			"year": 2023,
+			"season": "後期",
+			"day": "水",
+			"period": "4限",
+			"teacher": "VerlAdams",
+			"name": "SeminarinSpatialDesignⅡ",
+			"lectureId": "L0761",
+			"credits": 2,
+			"url": "http://www.kyouikujouhou.eas.tmu.ac.jp/syllabus/2023/A/3/2023_A6_L0761.html",
+			"type": "専門教育科目",
+			"faculty": "A6"
 		}
 	]`,
-	writer3.Body.String())
+		writer3.Body.String())
 }
-
-
